@@ -10,26 +10,26 @@ namespace web.Controllers
 {
     [Route("api/[controller]/[Action]")]
     [ApiController]
-    public class OwnerController : Controller
+    public class CustomerController : Controller
     {
-        private readonly IOwnerService _ownerService;
-        public OwnerController(IOwnerService ownerService)
+        private readonly ICustomerService _customerService;
+        public CustomerController(IOwnerService customerService)
         {
-            _ownerService = ownerService;
+            _customerService = customerService;
         }
 
         [HttpGet]
-        public ActionResult<List<OwnerDTO>> GetAll()
+        public ActionResult<List<CustomerDTO>> GetAll()
         {
-            return _ownerService.GetAll();
+            return _customerService.GetAll();
         }
 
         [HttpGet("{id}")]
-        public ActionResult<OwnerDTO> GetById(int id)
+        public ActionResult<CustomerDTO> GetById(int id)
         {
             try
             {
-                return _ownerService.GetById(id);
+                return _customerService.GetById(id);
             }
             catch (NotFoundException ex)
             {
@@ -38,12 +38,12 @@ namespace web.Controllers
         }
 
         [HttpPost]
-        public ActionResult<OwnerDTO> Create([FromBody] OwnerCreateRequest ownerCreateRequest)
+        public ActionResult<CustomerDTO> Create([FromBody] CustomerCreateRequest customerCreateRequest)
         {
             try
             {
-                var newOWner = _ownerService.Create(ownerCreateRequest);
-                return CreatedAtAction(nameof(GetById), new { id = newOWner.Id }, newOWner);
+                var newCustomer = _customerService.Create(customerCreateRequest);
+                return CreatedAtAction(nameof(GetById), new { id = newCustomer.Id }, newCustomer);
             }
             catch (NotFoundException ex)
             {
@@ -52,11 +52,11 @@ namespace web.Controllers
         }
 
         [HttpPut("{id}")]
-        public IActionResult Update([FromRoute] int id, [FromBody] OwnerUpdateRequest ownerUpdateRequest)
+        public IActionResult Update([FromRoute] int id, [FromBody] CustomerUpdateRequest customerUpdateRequest)
         {
             try
             {
-                _ownerService.Update(id, ownerUpdateRequest);
+                _customerService.Update(id, customerUpdateRequest);
                 return NoContent();
             }
             catch (NotFoundException ex)
@@ -91,7 +91,7 @@ namespace web.Controllers
         {
             try
             {
-                _ownerService.Delete(id);
+                _customerService.Delete(id);
                 return NoContent();
             }
             catch (NotFoundException ex)

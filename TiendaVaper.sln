@@ -11,15 +11,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain", "src\Domain\Domain
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure", "src\Infrastructure\Infrastructure.csproj", "{0CAD25CA-C35E-4B35-A1C8-8EA27677F8B1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "web", "src\web\web.csproj", "{AC5F62DC-37CA-4E95-8F6E-F985AB58132C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Web", "src\web\Web.csproj", "{AC5F62DC-37CA-4E95-8F6E-F985AB58132C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
-	EndGlobalSection
-	GlobalSection(SolutionProperties) = preSolution
-		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{ED06922C-F0DB-4604-9B99-2CC0366DAE91}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -38,6 +35,9 @@ Global
 		{AC5F62DC-37CA-4E95-8F6E-F985AB58132C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AC5F62DC-37CA-4E95-8F6E-F985AB58132C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AC5F62DC-37CA-4E95-8F6E-F985AB58132C}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{ED06922C-F0DB-4604-9B99-2CC0366DAE91} = {2C468DC3-21F4-4B1E-BEAD-E1D60AFA9109}
