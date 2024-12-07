@@ -18,6 +18,14 @@ namespace Application.Profiles
             CreateMap<OwnerCreateRequest, Owner>();
             CreateMap<OwnerUpdateRequest, Owner>();
             CreateMap<Owner, OwnerDTO>();
+
+            CreateMap<SysAdminUpdateRequest, SysAdmin>();
+            CreateMap<SysAdminCreateRequest, SysAdmin>();
+            CreateMap<SysAdmin, SysAdminDTO>();
+
+            CreateMap<CustomerUpdateRequest, Customer>();
+            CreateMap<CustomerCreateRequest, Customer>();
+            CreateMap<Customer, CustomerDTO>();
         }
     }
 }

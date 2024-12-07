@@ -13,7 +13,7 @@ namespace web.Controllers
     public class CustomerController : Controller
     {
         private readonly ICustomerService _customerService;
-        public CustomerController(IOwnerService customerService)
+        public CustomerController(ICustomerService customerService)
         {
             _customerService = customerService;
         }

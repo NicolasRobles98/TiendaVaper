@@ -10,26 +10,26 @@ namespace web.Controllers
 {
     [Route("api/[controller]/[Action]")]
     [ApiController]
-    public class OwnerController : Controller
+    public class SysAdminController : Controller
     {
-        private readonly IOwnerService _ownerService;
-        public OwnerController(IOwnerService ownerService)
+        private readonly ISysAdminService _sysAdminService;
+        public SysAdminController(ISysAdminService sysAdminService)
         {
-            _ownerService = ownerService;
+            _sysAdminService = sysAdminService;
         }
 
         [HttpGet]
-        public ActionResult<List<OwnerDTO>> GetAll()
+        public ActionResult<List<SysAdminDTO>> GetAll()
         {
-            return _ownerService.GetAll();
+            return _sysAdminService.GetAll();
         }
 
         [HttpGet("{id}")]
-        public ActionResult<OwnerDTO> GetById(int id)
+        public ActionResult<SysAdminDTO> GetById(int id)
         {
             try
             {
-                return _ownerService.GetById(id);
+                return _sysAdminService.GetById(id);
             }
             catch (NotFoundException ex)
             {
@@ -38,12 +38,12 @@ namespace web.Controllers
         }
 
         [HttpPost]
-        public ActionResult<OwnerDTO> Create([FromBody] OwnerCreateRequest ownerCreateRequest)
+        public ActionResult<SysAdminDTO> Create([FromBody] SysAdminCreateRequest sysAdminCreateRequest)
         {
             try
             {
-                var newOWner = _ownerService.Create(ownerCreateRequest);
-                return CreatedAtAction(nameof(GetById), new { id = newOWner.Id }, newOWner);
+                var newAdmin = _sysAdminService.Create(sysAdminCreateRequest);
+                return CreatedAtAction(nameof(GetById), new { id = newAdmin.Id }, newAdmin);
             }
             catch (NotFoundException ex)
             {
@@ -52,11 +52,11 @@ namespace web.Controllers
         }
 
         [HttpPut("{id}")]
-        public IActionResult Update([FromRoute] int id, [FromBody] OwnerUpdateRequest ownerUpdateRequest)
+        public IActionResult Update([FromRoute] int id, [FromBody] SysAdminUpdateRequest sysAdminUpdateRequest)
         {
             try
             {
-                _ownerService.Update(id, ownerUpdateRequest);
+                _sysAdminService.Update(id, sysAdminUpdateRequest);
                 return NoContent();
             }
             catch (NotFoundException ex)
@@ -91,7 +91,7 @@ namespace web.Controllers
         {
             try
             {
-                _ownerService.Delete(id);
+                _sysAdminService.Delete(id);
                 return NoContent();
             }
             catch (NotFoundException ex)
