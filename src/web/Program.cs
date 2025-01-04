@@ -34,18 +34,21 @@ builder.Services.AddDbContext<ApplicationContext>(dbContextOptions => dbContextO
 builder.Services.AddScoped<IOwnerRepository, OwnerRepository>();
 builder.Services.AddScoped<ISysAdminRepository, SysAdminRepository>();
 builder.Services.AddScoped<ICustomerRepository, CustomerRepository>();
+builder.Services.AddScoped<IProductRepository, ProductRepository>();
 
 // Registra un repositorio base genérico para las entidades,
 // permitiendo que se realicen operaciones comunes de acceso a datos.
 builder.Services.AddScoped<IBaseRepository<Owner>, BaseRepository<Owner>>();
 builder.Services.AddScoped<IBaseRepository<SysAdmin>, BaseRepository<SysAdmin>>();
 builder.Services.AddScoped<IBaseRepository<Customer>, BaseRepository<Customer>>();
+builder.Services.AddScoped<IBaseRepository<Product>, BaseRepository<Product>>();
 
 
 // Service
 builder.Services.AddScoped<IOwnerService, OwnerService>();
 builder.Services.AddScoped<ISysAdminService, SysAdminService>();
 builder.Services.AddScoped<ICustomerService, CustomerService>();
+builder.Services.AddScoped<IProductService, ProductService>();
 
 builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
 
