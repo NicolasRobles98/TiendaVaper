@@ -14,6 +14,7 @@ namespace Infrastructure.Data
         public DbSet<Customer> Customers { get; set; }
         public DbSet<SysAdmin> SysAdmins { get; set; }
         public DbSet<User> Users { get; set; }
+        public DbSet<Product> Products { get; set; }
 
         public ApplicationContext(DbContextOptions<ApplicationContext> options) :base(options) 
         {

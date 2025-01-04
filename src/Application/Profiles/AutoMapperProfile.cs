@@ -26,6 +26,10 @@ namespace Application.Profiles
             CreateMap<CustomerUpdateRequest, Customer>();
             CreateMap<CustomerCreateRequest, Customer>();
             CreateMap<Customer, CustomerDTO>();
+
+            CreateMap<ProductUpdateRequest, Product>();
+            CreateMap<ProductCreateRequest, Product>();
+            CreateMap<Product, ProductDTO>();
         }
     }
 }
