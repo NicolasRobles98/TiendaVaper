@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Data.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    [Migration("20241203192635_corrijo-no-null")]
-    partial class corrijononull
+    [Migration("20250226005937_InitialMigration2")]
+    partial class InitialMigration2
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -19,16 +19,36 @@ namespace Infrastructure.Data.Migrations
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "9.0.0");
 
-            modelBuilder.Entity("Domain.Entities.User", b =>
+            modelBuilder.Entity("Domain.Entities.Product", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("Discriminator")
+                    b.Property<int>("Amount")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Description")
                         .IsRequired()
-                        .HasMaxLength(8)
                         .HasColumnType("TEXT");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("Price")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Products");
+                });
+
+            modelBuilder.Entity("Domain.Entities.User", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -50,15 +70,14 @@ namespace Infrastructure.Data.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("UserRole")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
+                    b.Property<int>("UserRole")
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Users");
+                    b.ToTable("Users", (string)null);
 
-                    b.HasDiscriminator().HasValue("User");
+                    b.HasDiscriminator<int>("UserRole");
 
                     b.UseTphMappingStrategy();
                 });
@@ -67,21 +86,21 @@ namespace Infrastructure.Data.Migrations
                 {
                     b.HasBaseType("Domain.Entities.User");
 
-                    b.HasDiscriminator().HasValue("Customer");
+                    b.HasDiscriminator().HasValue(1);
                 });
 
             modelBuilder.Entity("Domain.Entities.Owner", b =>
                 {
                     b.HasBaseType("Domain.Entities.User");
 
-                    b.HasDiscriminator().HasValue("Owner");
+                    b.HasDiscriminator().HasValue(0);
                 });
 
             modelBuilder.Entity("Domain.Entities.SysAdmin", b =>
                 {
                     b.HasBaseType("Domain.Entities.User");
 
-                    b.HasDiscriminator().HasValue("SysAdmin");
+                    b.HasDiscriminator().HasValue(2);
                 });
 #pragma warning restore 612, 618
         }

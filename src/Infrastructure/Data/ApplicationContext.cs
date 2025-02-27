@@ -1,4 +1,5 @@
 ﻿using Domain.Entities;
+using Domain.Enums;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -19,6 +20,17 @@ namespace Infrastructure.Data
         public ApplicationContext(DbContextOptions<ApplicationContext> options) :base(options) 
         {
 
+        }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+
+            modelBuilder.Entity<User>()
+                .ToTable("Users")  // Mapea toda la jerarquía a la misma tabla "Usuarios"
+                .HasDiscriminator<UserRole>("UserRole")
+                .HasValue<Customer>(UserRole.Customer)
+                .HasValue<Owner>(UserRole.Owner)
+                .HasValue<SysAdmin>(UserRole.SysAdmin);
         }
     }
 }

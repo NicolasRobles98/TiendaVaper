@@ -47,11 +47,6 @@ namespace Infrastructure.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("Discriminator")
-                        .IsRequired()
-                        .HasMaxLength(8)
-                        .HasColumnType("TEXT");
-
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasColumnType("TEXT");
@@ -72,15 +67,14 @@ namespace Infrastructure.Data.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("UserRole")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
+                    b.Property<int>("UserRole")
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Users");
+                    b.ToTable("Users", (string)null);
 
-                    b.HasDiscriminator().HasValue("User");
+                    b.HasDiscriminator<int>("UserRole");
 
                     b.UseTphMappingStrategy();
                 });
@@ -89,21 +83,21 @@ namespace Infrastructure.Data.Migrations
                 {
                     b.HasBaseType("Domain.Entities.User");
 
-                    b.HasDiscriminator().HasValue("Customer");
+                    b.HasDiscriminator().HasValue(1);
                 });
 
             modelBuilder.Entity("Domain.Entities.Owner", b =>
                 {
                     b.HasBaseType("Domain.Entities.User");
 
-                    b.HasDiscriminator().HasValue("Owner");
+                    b.HasDiscriminator().HasValue(0);
                 });
 
             modelBuilder.Entity("Domain.Entities.SysAdmin", b =>
                 {
                     b.HasBaseType("Domain.Entities.User");
 
-                    b.HasDiscriminator().HasValue("SysAdmin");
+                    b.HasDiscriminator().HasValue(2);
                 });
 #pragma warning restore 612, 618
         }

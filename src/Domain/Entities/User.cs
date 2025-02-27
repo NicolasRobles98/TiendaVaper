@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Domain.Enums;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -25,6 +26,6 @@ namespace Domain.Entities
         public string Password { get; set; } = string.Empty;
         [Required]
         public string UserName { get; set; } = string.Empty;
-        public string UserRole { get; set; } = string.Empty;
+        public UserRole UserRole { get; set; }
     }
 }
