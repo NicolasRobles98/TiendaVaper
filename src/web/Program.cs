@@ -8,6 +8,11 @@ using Microsoft.EntityFrameworkCore;
 using Domain.Entities;
 using Application.Interfaces;
 using Application.Services;
+using Domain.Enums;
+using Microsoft.OpenApi.Models;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+using Infrastructure.Service;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -35,6 +40,7 @@ builder.Services.AddScoped<IOwnerRepository, OwnerRepository>();
 builder.Services.AddScoped<ISysAdminRepository, SysAdminRepository>();
 builder.Services.AddScoped<ICustomerRepository, CustomerRepository>();
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
 
 // Registra un repositorio base genérico para las entidades,
 // permitiendo que se realicen operaciones comunes de acceso a datos.
@@ -42,6 +48,7 @@ builder.Services.AddScoped<IBaseRepository<Owner>, BaseRepository<Owner>>();
 builder.Services.AddScoped<IBaseRepository<SysAdmin>, BaseRepository<SysAdmin>>();
 builder.Services.AddScoped<IBaseRepository<Customer>, BaseRepository<Customer>>();
 builder.Services.AddScoped<IBaseRepository<Product>, BaseRepository<Product>>();
+builder.Services.AddScoped<IBaseRepository<User>, BaseRepository<User>>();
 
 
 // Service
@@ -49,11 +56,67 @@ builder.Services.AddScoped<IOwnerService, OwnerService>();
 builder.Services.AddScoped<ISysAdminService, SysAdminService>();
 builder.Services.AddScoped<ICustomerService, CustomerService>();
 builder.Services.AddScoped<IProductService, ProductService>();
+builder.Services.AddScoped<IAutenticacionService, AutenticacionService>();
 
-builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
 
 
 builder.Services.AddAutoMapper(typeof(AutoMapperProfile)); //AutoMapper
+
+#region Authentication
+builder.Services.AddSwaggerGen(setupAction =>
+{
+    setupAction.AddSecurityDefinition("ApiBearerAuth", new OpenApiSecurityScheme()
+    {
+        Type = SecuritySchemeType.Http,
+        Scheme = "Bearer",
+        Description = "Introduzca el token JWT como: Bearer {token}"
+    });
+
+    setupAction.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
+                {
+                    Type = ReferenceType.SecurityScheme,
+                    Id = "ApiBearerAuth"
+                }
+            },
+            new List<string>()
+        }
+    });
+});
+//configurar las opciones para la clase AutenticacionServiceOptions
+builder.Services.Configure<AutenticacionService.AutenticacionServiceOptions>(
+    builder.Configuration.GetSection("Authentication"));
+
+builder.Services.AddAuthentication("Bearer")
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new()
+        {
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateIssuerSigningKey = true,
+            ValidIssuer = builder.Configuration["Authentication:Issuer"],
+            ValidAudience = builder.Configuration["Authentication:Audience"],
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(builder.Configuration["Authentication:SecretForKey"]))
+        };
+    });
+
+
+
+// configuración de autorización basada en roles
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("Cliente", policy => policy.RequireRole(UserRole.Customer.ToString(), UserRole.SysAdmin.ToString()));
+    options.AddPolicy("Dueno", policy => policy.RequireRole(UserRole.Owner.ToString(), UserRole.SysAdmin.ToString()));
+    options.AddPolicy("SysAdmin", policy => policy.RequireRole(UserRole.SysAdmin.ToString()));
+
+
+});
+#endregion
 
 var app = builder.Build();
 
