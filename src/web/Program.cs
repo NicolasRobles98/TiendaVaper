@@ -18,6 +18,10 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
+
+builder.Services.AddCors();
+//este es para hacer la conexion con el front
+
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -80,7 +84,7 @@ builder.Services.AddSwaggerGen(setupAction =>
                 Reference = new OpenApiReference
                 {
                     Type = ReferenceType.SecurityScheme,
-                    Id = "ApiBearerAuth"
+                    Id = "CarWashApiBearerAuth"
                 }
             },
             new List<string>()
@@ -110,8 +114,8 @@ builder.Services.AddAuthentication("Bearer")
 // configuración de autorización basada en roles
 builder.Services.AddAuthorization(options =>
 {
-    options.AddPolicy("Cliente", policy => policy.RequireRole(UserRole.Customer.ToString(), UserRole.SysAdmin.ToString()));
-    options.AddPolicy("Dueno", policy => policy.RequireRole(UserRole.Owner.ToString(), UserRole.SysAdmin.ToString()));
+    options.AddPolicy("Customer", policy => policy.RequireRole(UserRole.Customer.ToString(), UserRole.SysAdmin.ToString()));
+    options.AddPolicy("Owner", policy => policy.RequireRole(UserRole.Owner.ToString(), UserRole.SysAdmin.ToString()));
     options.AddPolicy("SysAdmin", policy => policy.RequireRole(UserRole.SysAdmin.ToString()));
 
 
@@ -128,6 +132,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseCors(x => x.AllowAnyHeader().AllowAnyMethod().WithOrigins("http://localhost:5173"));
 
 app.UseAuthorization();
 
